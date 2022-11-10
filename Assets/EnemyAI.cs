@@ -9,7 +9,7 @@ public class EnemyAI : MonoBehaviour
     private bool mustTurn;
     public Transform check;
     private Rigidbody2D rb;
-    public LayerMask ground;
+    public List<LayerMask> layer;
     public Collider2D collider;
     // Start is called before the first frame update
     void Start()
@@ -22,7 +22,11 @@ public class EnemyAI : MonoBehaviour
     {
         if(Patrol)
         {
-            mustTurn = !Physics2D.OverlapCircle(check.position, 0.1f, ground);
+            for (int i = 0; i < layer.Count; i++)
+            {
+                mustTurn = !Physics2D.OverlapCircle(check.position, 0.1f, layer[i]);
+                if (!mustTurn) break;
+            }
         }
     }
 
@@ -36,9 +40,13 @@ public class EnemyAI : MonoBehaviour
     }
     void Movement()
     {
-        if(mustTurn || collider.IsTouchingLayers(ground))
+        for (int i = 0; i < layer.Count; i++)
         {
-            Flip();
+            if (mustTurn || collider.IsTouchingLayers(layer[i]))
+            {
+                Flip();
+                break;
+            }
         }
         rb.velocity = new Vector2(walkspeed * Time.fixedDeltaTime, rb.velocity.y);
     }
