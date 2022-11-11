@@ -24,40 +24,4 @@ public class Player : PlayerAbstract
             rb.velocity = new Vector2(rb.velocity.x, 12);
         }
     }
-    List<string> InteractableObject = new List<string>() { "Ground", "Platform" };
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Obstacles"))
-        {
-            this.gameObject.SetActive(false);
-        }
-        foreach (string item in InteractableObject)
-        {
-            if (collision.gameObject.CompareTag(item))
-            {
-                isJumping = false;
-            }
-        }
-    }
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        for (int i = 0; i < InteractableObject.Count; i++)
-        {
-            if (collision.gameObject.CompareTag(InteractableObject[i]))
-            {
-                isJumping = false;
-            }
-        }
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        foreach (string item in InteractableObject)
-        { 
-            if (collision.gameObject.CompareTag(item))
-            {
-                isJumping = true;
-            }
-        }
-    }
 }
